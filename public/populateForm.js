@@ -1,7 +1,43 @@
 var generatedData = ""
-
+const options = {
+    margin: 0.5,
+    filename: 'invoice_receipt.pdf',
+    image: {
+        type: 'jpeg',
+        quality: 500
+    },
+    html2canvas: {
+        scale: 1
+    },
+    jsPDF: {
+        unit: 'in',
+        format: 'letter',
+        orientation: 'portrait'
+    }
+}
 document.addEventListener('DOMContentLoaded', function () {
-    // Your code here
+    document.getElementById('download').addEventListener('click', async function (event) {
+        event.preventDefault();
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFontSize(12);
+        const element = document.getElementById("generatedContent");
+
+        doc.html(element, {
+            callback: function (doc) {
+                doc.save("div-content.pdf");
+            },
+            x: 15,
+            y: 15,
+            html2canvas: {
+                scale: 0.25,
+            },
+            autoPaging: 'text',
+            width: 100,
+            windowWidth: 700
+        });
+    })
+
     const comp1 = document.getElementById("completed-icon-1");
     const loader1 = document.getElementById("loading-icon-1");
     const comp2 = document.getElementById("completed-icon-2");
@@ -99,3 +135,4 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
 });
+
