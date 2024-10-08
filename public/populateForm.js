@@ -1,20 +1,5 @@
 var generatedData = ""
-const options = {
-    margin: 0.5,
-    filename: 'invoice_receipt.pdf',
-    image: {
-        type: 'jpeg',
-        quality: 500
-    },
-    html2canvas: {
-        scale: 1
-    },
-    jsPDF: {
-        unit: 'in',
-        format: 'letter',
-        orientation: 'portrait'
-    }
-}
+
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('download').addEventListener('click', async function (event) {
         event.preventDefault();
