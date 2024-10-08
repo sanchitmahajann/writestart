@@ -16,7 +16,6 @@ app.get('/', (req, res) => {
 
 app.post('/scrape', async (req, res) => {
   const { url } = req.body;
-
   try {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
@@ -51,18 +50,29 @@ app.post('/scrape', async (req, res) => {
       typeOfProduct: productName,
       idealUser: idealUser
     };
+    console.log(extractedInfo);
     fs.writeFileSync('extracted_info.json', JSON.stringify(extractedInfo, null, 2));
-
+    // Send both extracted info and generated content back to the client
+    res.json({ extractedInfo });
     await browser.close();
 
-    // Send both extracted info and generated content back to the client
-    const generatedContent = await generateContent(companyName, productName, idealUser);
-    res.json({ extractedInfo, generatedContent });
+
 
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Failed to scrape the webpage' });
   }
+});
+
+app.post('/generate', async (req, res) => {
+  const { companyName, productName, idealUser } = req.body;
+  // Validate that all required parameters are present
+  if (!companyName || !productName || !idealUser) {
+    return res.status(400).json({ error: 'Missing required parameters' });
+  }
+  // Send both extracted info and generated content back to the client
+  const generatedContent = await generateContent(companyName, productName, idealUser);
+  res.json({ generatedContent });
 });
 
 app.listen(3002, () => {
@@ -113,15 +123,14 @@ async function makeOpenAICall(prompt, retries = 3) {
 
 async function generateTweets(companyName, productName, idealUser) {
   const prompt = `
-    Write the first 2 Tweets for my company ${companyName}.
-    Our main product revolves around ${productName} and the ideal user is ${idealUser}. Generate the content in markdown format.
+    Write the first 2 Tweets for my company ${companyName}. It MUST be in basic HTML format.
+    Our main product revolves around ${productName} and the ideal user is ${idealUser}.
     Rules:
-    1. No hashtags
-    2. Tweet 1 should be about the launch
-    3. Tweet 2 should be about the problem the product solves
-    4. Tweet 3 should be about how the product solves the problem
-    5. Tweet 4 should be about testimonials
-    6. Tweet 5 should be funny and engaging content
+    1. Tweet 1 should be about the launch
+    2. Tweet 2 should be about the problem the product solves
+    3. Tweet 3 should be about how the product solves the problem
+    4. Tweet 4 should be about testimonials
+    5. Tweet 5 should be funny and engaging content
    
   `;
 
@@ -137,7 +146,7 @@ async function getPosts(companyName, productName, idealUser) {
     2. Slide 1 Content
     3. Slide 2 Content
     Our main product revolves around ${productName} and the ideal user is ${idealUser}.
-    Each post idea should have a newline space between it so that the written content is visible in an organised way. Generate the content in markdown format.
+    Each post idea should have a newline space between it so that the written content is visible in an organised way. Generate in basic HTML format.
   `;
 
   const response = await makeOpenAICall(prompt);
@@ -148,7 +157,7 @@ async function getBlogs(companyName, productName, idealUser) {
   const prompt = `
     Write the first 2 blogs for my company ${companyName}.
     Our main product revolves around ${productName} and the ideal user is ${idealUser}.
-    Separate each blog by a newline. There needs to be a visible difference in each blog post. Generate the content in markdown format. 
+    Generate in simple basic HTML format. There needs to be a visible difference in each blog post.
   `;
 
   const response = await makeOpenAICall(prompt);
@@ -158,18 +167,20 @@ async function getBlogs(companyName, productName, idealUser) {
 
 async function generateContent(companyName, productName, idealUser) {
   try {
-   
+
     const tweets = await generateTweets(companyName, productName, idealUser);
 
     const posts = await getPosts(companyName, productName, idealUser);
 
     const blogs = await getBlogs(companyName, productName, idealUser);
 
-    const content = `
-      Tweets:\n${tweets}\n\n
-      Instagram Posts:\n${posts}\n\n
-      Blogs:\n${blogs}\n
-    `;
+
+
+    const content = {
+      "tweets": tweets,
+      "posts": posts,
+      "blogs": blogs
+    }
 
     return content;
   } catch (error) {

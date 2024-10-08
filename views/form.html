@@ -127,8 +127,8 @@
                     ></path>
                   </svg>
                   <svg
-                    id="loading-icon"
-                    class="hidden ml-2"
+                    id="loading-icon-1"
+                    class="ml-2"
                     width="1em"
                     height="1em"
                     fill="currentColor"
@@ -157,8 +157,8 @@
                     />
                   </svg>
                   <svg
-                    id="completed-icon"
-                    class="hidden ml-2"
+                    id="completed-icon-1"
+                    class=" ml-2"
                     stroke="currentColor"
                     fill="currentColor"
                     stroke-width="0"
@@ -179,7 +179,7 @@
                 >
                   Generate Content
                   <svg
-                    id="go-icon"
+                    id="go-icon-2"
                     class="ml-2"
                     stroke="currentColor"
                     fill="currentColor"
@@ -194,7 +194,7 @@
                     ></path>
                   </svg>
                   <svg
-                    id="loading-icon"
+                    id="loading-icon-2"
                     class="hidden ml-2"
                     width="1em"
                     height="1em"
@@ -224,8 +224,8 @@
                     />
                   </svg>
                   <svg
-                    id="completed-icon"
-                    class="hidden ml-2"
+                    id="completed-icon-2"
+                    class=" ml-2"
                     stroke="currentColor"
                     fill="currentColor"
                     stroke-width="0"
@@ -244,13 +244,13 @@
           </form>
         </div>
 
-        <div class="flex flex-col w-full p-6 bg-gray-800 text-white">
+        <div class="flex flex-col p-6 bg-gray-800 text-white w-3/5">
           <div
             class="flex flex-row justify-center items-center space-x-[1px] sticky top-0"
           >
-            <div
+            <div id="twitter"
               data-tab-target="#content-tweets"
-              class="cursor-pointer px-6 py-3 text-white rounded-l-xl bg-blue-600 flex flex-row items-center justify-center"
+              class="cursor-pointer px-6 py-3 text-white rounded-l-xl bg-blue-600 flex flex-row items-center justify-center" 
             >
               <svg
                 class=""
@@ -267,7 +267,7 @@
               </svg>
             </div>
             <div
-              data-tab-target="#content-posts"
+              data-tab-target="#content-posts" id="blog"
               class="cursor-pointer px-6 py-3 bg-[#22489A] text-white flex flex-row items-center justify-center"
             >
               <svg
@@ -286,7 +286,7 @@
               </svg>
             </div>
             <div
-              data-tab-target="#content-blogs"
+              data-tab-target="#content-blogs" id='instagram'
               class="cursor-pointer px-6 py-3 bg-[#22489A] text-white rounded-r-xl flex flex-row items-center justify-center"
             >
               <svg
@@ -374,20 +374,15 @@
       const output3 = document.getElementById("content-blogs");
       // const razpay = document.querySelector('.pay-now');
       const def = document.getElementById("go-icon");
-      const loader = document.getElementById("loading-icon");
-      const comp = document.getElementById("completed-icon");
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
         def.style.display = "none";
-        loader.style.display = "block";
         const formData = new FormData(form);
         const response = await fetch("/", {
           method: "POST",
           body: formData,
         });
         const data = await response.json();
-        loader.style.display = "none";
-        comp.style.display = "block";
         output1.innerHTML = marked.parse(data.tweets);
         output2.innerHTML = marked.parse(data.posts);
         output3.innerHTML = marked.parse(data.blogs);
