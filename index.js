@@ -51,7 +51,6 @@ app.post('/scrape', async (req, res) => {
       idealUser: idealUser
     };
     console.log(extractedInfo);
-    fs.writeFileSync('extracted_info.json', JSON.stringify(extractedInfo, null, 2));
     // Send both extracted info and generated content back to the client
     res.json({ extractedInfo });
     await browser.close();
