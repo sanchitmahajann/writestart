@@ -114,9 +114,9 @@ async function makeOpenAICall(prompt, retries = 3) {
 async function generateTweets(companyName, productName, idealUser) {
   const prompt = `
     Write the first 2 Tweets for my company ${companyName}.
-    Our main product revolves around ${productName} and the ideal user is ${idealUser}.
+    Our main product revolves around ${productName} and the ideal user is ${idealUser}. Generate the content in markdown format.
     Rules:
-    1. No hashtags and format it in markdown
+    1. No hashtags
     2. Tweet 1 should be about the launch
     3. Tweet 2 should be about the problem the product solves
     4. Tweet 3 should be about how the product solves the problem
@@ -137,7 +137,7 @@ async function getPosts(companyName, productName, idealUser) {
     2. Slide 1 Content
     3. Slide 2 Content
     Our main product revolves around ${productName} and the ideal user is ${idealUser}.
-    Each post idea should have a newline space between it so that the written content is visible in an organised way
+    Each post idea should have a newline space between it so that the written content is visible in an organised way. Generate the content in markdown format.
   `;
 
   const response = await makeOpenAICall(prompt);
@@ -148,7 +148,7 @@ async function getBlogs(companyName, productName, idealUser) {
   const prompt = `
     Write the first 2 blogs for my company ${companyName}.
     Our main product revolves around ${productName} and the ideal user is ${idealUser}.
-    Separate each blog by a newline. There needs to be a visible difference in each blog post.
+    Separate each blog by a newline. There needs to be a visible difference in each blog post. Generate the content in markdown format. 
   `;
 
   const response = await makeOpenAICall(prompt);
