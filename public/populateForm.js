@@ -1,4 +1,5 @@
 var generatedData = ""
+var md = window.markdownit();
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('download').addEventListener('click', async function (event) {
@@ -84,10 +85,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (response.ok) {
                 const data = await response.json();
-                const contentContainer = document.getElementById('generatedContent');
                 generatedData = data.generatedContent
-                contentContainer.innerHTML = generatedData.tweets
-                loader2.style.display = "none";
+                const output = document.getElementById("generatedContent")
+                output.innerHTML = md.render(generatedData.tweets);
+                console.log(generatedData.tweets); loader2.style.display = "none";
                 comp2.style.display = "block";
             } else {
                 console.error('Failed to fetch generated content');
@@ -99,40 +100,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('twitter').addEventListener('click', async function (event) {
         event.preventDefault();
-        var converter = new showdown.Converter();
-        let html = converter.makeHtml(generatedData.tweets);
-        console.log(html);
-        let parent = document.getElementById('generatedContent')
-        parent.innerHTML = ''
-        let child = document.createElement('div')
-        child.innerHTML = html
-        parent.appendChild(child)
+        const output = document.getElementById("generatedContent")
+        output.innerHTML = md.render(generatedData.tweets);
+        console.log(generatedData.tweets);
+        console.log(output.innerHTML);
     })
 
     document.getElementById('blog').addEventListener('click', async function (event) {
         event.preventDefault();
-        var converter = new showdown.Converter();
-        let html = converter.makeHtml(generatedData.blogs);
-        console.log(html);
-        let parent = document.getElementById('generatedContent')
-        parent.innerHTML = ''
-        let child = document.createElement('div')
-        child.innerHTML = html
-        parent.appendChild(child)
-        console.log(generatedData.posts);
+        const output = document.getElementById("generatedContent")
+        output.innerHTML = md.render(generatedData.blogs);
+        console.log(generatedData.blogs);
+        console.log(output.innerHTML);
     })
 
     document.getElementById('instagram').addEventListener('click', async function (event) {
         event.preventDefault();
-        var converter = new showdown.Converter();
-        let html = converter.makeHtml(generatedData.posts);
-        console.log(html);
-        let parent = document.getElementById('generatedContent')
-        parent.innerHTML = ''
-        let child = document.createElement('div')
-        child.innerHTML = html
-        parent.appendChild(child)
+        const output = document.getElementById("generatedContent")
+        output.innerHTML = md.render(generatedData.posts);
         console.log(generatedData.posts);
+        console.log(output.innerHTML);
     })
 
 });
