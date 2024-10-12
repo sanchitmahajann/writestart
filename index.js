@@ -122,7 +122,7 @@ async function makeOpenAICall(prompt, retries = 3) {
 
 async function generateTweets(companyName, productName, idealUser) {
   const prompt = `
-    Write the first 2 Tweets for my company ${companyName}. Just list the tweets. Don't say "here are tweets" or anything similar. Generate in basic markdown.
+    Write the first 2 Tweets for my company ${companyName}. Just list the tweets. Don't say "here are tweets" or anything similar. Generate in basic markdown with titles being bold with **. The whole content should not be bold, only the title sentence.
     Our main product revolves around ${productName} and the ideal user is ${idealUser}.
     Rules:
     1. Tweet 1 should be about the launch
@@ -145,7 +145,7 @@ async function getPosts(companyName, productName, idealUser) {
     2. Slide 1 Content
     3. Slide 2 Content
     Our main product revolves around ${productName} and the ideal user is ${idealUser}.
-    Each post idea should have a newline space between it so that the written content is visible in an organised way. Don't say "here are instagram" or anything similar. Generate in basic markdown.
+    Each post idea should have a newline space between it so that the written content is visible in an organised way. Don't say "markdown" at the beginning. Don't say "here are instagram" or anything similar. Generate in basic markdown with titles being bold with **.
   `;
 
   const response = await makeOpenAICall(prompt);
@@ -156,7 +156,7 @@ async function getBlogs(companyName, productName, idealUser) {
   const prompt = `
     Write the first 2 blogs for my company ${companyName}.
     Our main product revolves around ${productName} and the ideal user is ${idealUser}.
-    Don't say "here are blogs" or anything similar.. Generate in basic markdown. There needs to be a visible difference in each blog post.
+    Don't say "here are blogs" or anything similar. It should be 200 words long. There needs to be a visible difference in each blog post. Generate in basic markdown with titles being bold with **.
   `;
 
   const response = await makeOpenAICall(prompt);
