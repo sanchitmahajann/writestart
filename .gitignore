@@ -1,2 +1,4 @@
 .env
 node_modules
+extraced_info.json
+scraped_text.txt
