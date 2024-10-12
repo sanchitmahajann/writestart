@@ -99,24 +99,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('twitter').addEventListener('click', async function (event) {
         event.preventDefault();
-        console.log("Run");
-        const contentContainer = document.getElementById('generatedContent');
-        contentContainer.innerHTML = generatedData.tweets
-        console.log(generatedData);
+        var converter = new showdown.Converter();
+        let html = converter.makeHtml(generatedData.tweets);
+        console.log(html);
+        let parent = document.getElementById('generatedContent')
+        parent.innerHTML = ''
+        let child = document.createElement('div')
+        child.innerHTML = html
+        parent.appendChild(child)
     })
 
     document.getElementById('blog').addEventListener('click', async function (event) {
         event.preventDefault();
-
-        const contentContainer = document.getElementById('generatedContent');
-        contentContainer.innerHTML = generatedData.blogs
+        var converter = new showdown.Converter();
+        let html = converter.makeHtml(generatedData.blogs);
+        console.log(html);
+        let parent = document.getElementById('generatedContent')
+        parent.innerHTML = ''
+        let child = document.createElement('div')
+        child.innerHTML = html
+        parent.appendChild(child)
+        console.log(generatedData.posts);
     })
 
     document.getElementById('instagram').addEventListener('click', async function (event) {
         event.preventDefault();
-
-        const contentContainer = document.getElementById('generatedContent');
-        contentContainer.innerHTML = generatedData.posts
+        var converter = new showdown.Converter();
+        let html = converter.makeHtml(generatedData.posts);
+        console.log(html);
+        let parent = document.getElementById('generatedContent')
+        parent.innerHTML = ''
+        let child = document.createElement('div')
+        child.innerHTML = html
+        parent.appendChild(child)
+        console.log(generatedData.posts);
     })
 
 });
