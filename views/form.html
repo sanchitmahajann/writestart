@@ -14,7 +14,11 @@
 <script type='text/javascript' src= "https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> 
 <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.min.js" integrity="sha512-2ziYH4Qk1Cs0McWDB9jfPYzvRgxC8Cj62BUC2fhwrP/sUBkkfjYk3142xTKyuCyGWL4ooW8wWOzMTX86X1xe3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style></style>
+    <style>
+      .generatedContent h1, .generatedContent h2, .generatedContent h3, .generatedContent h4  {
+        font-weight: 600 !important;
+      }
+    </style>
   </head>
   <body>
     <div
@@ -309,7 +313,7 @@
               </svg>
             </div>
           </div>
-          <div class="flex flex-col h-full justify-between" id="generatedContent">
+          <div class="flex flex-col h-full" id="generatedContent">
             
           </div>
 
@@ -347,7 +351,7 @@
       </div>
     </div>
 
-    <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@10.0.0/dist/markdown-it.min.js"></script>
 
     <script src="/populateForm.js"></script>
     <script>
