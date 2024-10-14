@@ -1,7 +1,29 @@
 var generatedData = ""
+var md = window.markdownit();
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Your code here
+    document.getElementById('download').addEventListener('click', async function (event) {
+        event.preventDefault();
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFontSize(12);
+        const element = document.getElementById("generatedContent");
+
+        doc.html(element, {
+            callback: function (doc) {
+                doc.save("writestart.pdf");
+            },
+            x: 15,
+            y: 15,
+            html2canvas: {
+                scale: 0.25,
+            },
+            autoPaging: 'text',
+            width: 100,
+            windowWidth: 700
+        });
+    })
+
     const comp1 = document.getElementById("completed-icon-1");
     const loader1 = document.getElementById("loading-icon-1");
     const comp2 = document.getElementById("completed-icon-2");
@@ -63,10 +85,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (response.ok) {
                 const data = await response.json();
-                const contentContainer = document.getElementById('generatedContent');
                 generatedData = data.generatedContent
-                contentContainer.innerHTML = generatedData.tweets
-                loader2.style.display = "none";
+                const output = document.getElementById("generatedContent")
+                output.innerHTML = md.render(generatedData.tweets);
+                console.log(generatedData.tweets); loader2.style.display = "none";
                 comp2.style.display = "block";
             } else {
                 console.error('Failed to fetch generated content');
@@ -78,24 +100,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('twitter').addEventListener('click', async function (event) {
         event.preventDefault();
-        console.log("Run");
-        const contentContainer = document.getElementById('generatedContent');
-        contentContainer.innerHTML = generatedData.tweets
-        console.log(generatedData);
+        const output = document.getElementById("generatedContent")
+        output.innerHTML = md.render(generatedData.tweets);
+        console.log(generatedData.tweets);
+        console.log(output.innerHTML);
     })
 
     document.getElementById('blog').addEventListener('click', async function (event) {
         event.preventDefault();
-
-        const contentContainer = document.getElementById('generatedContent');
-        contentContainer.innerHTML = generatedData.blogs
+        const output = document.getElementById("generatedContent")
+        output.innerHTML = md.render(generatedData.blogs);
+        console.log(generatedData.blogs);
+        console.log(output.innerHTML);
     })
 
     document.getElementById('instagram').addEventListener('click', async function (event) {
         event.preventDefault();
-
-        const contentContainer = document.getElementById('generatedContent');
-        contentContainer.innerHTML = generatedData.posts
+        const output = document.getElementById("generatedContent")
+        output.innerHTML = md.render(generatedData.posts);
+        console.log(generatedData.posts);
+        console.log(output.innerHTML);
     })
 
 });
+
