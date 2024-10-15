@@ -7,11 +7,11 @@ const axios = require('axios');
 const app = express();
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'))
 
 // Serve the HTML form
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'form.html'));
+  res.sendFile(path.join(__dirname, '/public/form.html'));
 });
 
 app.post('/scrape', async (req, res) => {
@@ -74,9 +74,7 @@ app.post('/generate', async (req, res) => {
   res.json({ generatedContent });
 });
 
-app.listen(3002, () => {
-  console.log('Server is running on http://localhost:3002');
-});
+
 
 process.on('SIGINT', () => {
   console.log("Shutting down server...");
@@ -188,3 +186,4 @@ async function generateContent(companyName, productName, idealUser) {
   }
 }
 
+export default app;
