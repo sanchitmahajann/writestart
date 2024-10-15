@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 document.getElementById('companyName').value = data.extractedInfo.companyName;
                 document.getElementById('typeOfProduct').value = data.extractedInfo.typeOfProduct;
                 document.getElementById('idealUser').value = data.extractedInfo.idealUser;
@@ -69,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const companyName = document.getElementById('companyName').value;
             const productName = document.getElementById('typeOfProduct').value;
             const idealUser = document.getElementById('idealUser').value;
-            console.log(companyName, productName, idealUser);
             response = await fetch('/generate', {
                 method: 'POST',
                 headers: {
@@ -88,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 generatedData = data.generatedContent
                 const output = document.getElementById("generatedContent")
                 output.innerHTML = md.render(generatedData.tweets);
-                console.log(generatedData.tweets); loader2.style.display = "none";
+                loader2.style.display = "none";
                 comp2.style.display = "block";
             } else {
                 console.error('Failed to fetch generated content');
@@ -102,24 +100,18 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         const output = document.getElementById("generatedContent")
         output.innerHTML = md.render(generatedData.tweets);
-        console.log(generatedData.tweets);
-        console.log(output.innerHTML);
     })
 
     document.getElementById('blog').addEventListener('click', async function (event) {
         event.preventDefault();
         const output = document.getElementById("generatedContent")
         output.innerHTML = md.render(generatedData.blogs);
-        console.log(generatedData.blogs);
-        console.log(output.innerHTML);
     })
 
     document.getElementById('instagram').addEventListener('click', async function (event) {
         event.preventDefault();
         const output = document.getElementById("generatedContent")
         output.innerHTML = md.render(generatedData.posts);
-        console.log(generatedData.posts);
-        console.log(output.innerHTML);
     })
 
 });
