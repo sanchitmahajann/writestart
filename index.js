@@ -1,10 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs').promises;
 const puppeteer = require("puppeteer");
-import axios from 'axios/dist/node/axios.cjs';
-// https://stackoverflow.com/questions/75813948/vercel-serverless-function-crashing-due-to-cannot-find-module-var-task-backend
 const app = express();
 
 app.use(express.json());
@@ -83,13 +81,11 @@ process.on('SIGINT', () => {
 });
 
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+
 
 async function makeOpenAICall(prompt, retries = 3) {
   try {
-    const fileText = fs.readFileSync('scraped_text.txt', 'utf8');
+    const fileText = await fs.readFile('scraped_text.txt', 'utf8');
     const payload = {
       model: "gpt-3.5-turbo",
       messages: [
@@ -98,26 +94,38 @@ async function makeOpenAICall(prompt, retries = 3) {
       ]
     };
 
-    const response = await axios.post('https://api.openai.com/v1/chat/completions', payload, {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify(payload)
     });
 
-    return response.data.choices[0].message.content;
-  } catch (error) {
-    if (error.response && error.response.status === 429 && retries > 0) {
-      console.log('Rate limit exceeded, retrying in 5 seconds...');
-      await sleep(5000);  // Wait for 5 seconds before retrying
-      return makeOpenAICall(prompt, retries - 1);
-    } else {
-      console.error('Error:', error.response ? error.response.data : error.message);
-      throw error;
+    if (!response.ok) {
+      if (response.status === 429 && retries > 0) {
+        console.log('Rate limit exceeded, retrying in 5 seconds...');
+        await sleep(5000);  // Wait for 5 seconds before retrying
+        return makeOpenAICall(prompt, retries - 1);
+      } else {
+        const errorData = await response.json();
+        console.error('Error:', errorData);
+        throw new Error(errorData);
+      }
     }
+
+    const data = await response.json();
+    return data.choices[0].message.content;
+  } catch (error) {
+    console.error('Error:', error.message);
+    throw error;
   }
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 async function generateTweets(companyName, productName, idealUser) {
   const prompt = `
