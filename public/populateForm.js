@@ -28,7 +28,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const loader1 = document.getElementById("loading-icon-1");
     const comp2 = document.getElementById("completed-icon-2");
     const loader2 = document.getElementById("loading-icon-2");
-    const go1 = document.getElementById("go-icon-2");
+    const go1 = document.getElementById("go-icon-1");
+    const go2 = document.getElementById("go-icon-2");
     comp1.style.display = "none";
     comp2.style.display = "none";
     loader2.style.display = "none";
@@ -43,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let response;
         if (clickedButton === 'fillFormButton') {
             loader1.style.display = "block";
+            go1.style.display = "none";
             response = await fetch('/scrape', {
                 method: 'POST',
                 headers: {
@@ -63,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         } else if (clickedButton === 'generateContentButton') {
             loader2.style.display = "block";
-            go1.style.display = "none";
+            go2.style.display = "none";
             const companyName = document.getElementById('companyName').value;
             const productName = document.getElementById('typeOfProduct').value;
             const idealUser = document.getElementById('idealUser').value;

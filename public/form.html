@@ -120,7 +120,7 @@
                 
                   Let's Go
                   <svg
-                    id="go-icon"
+                    id="go-icon-1"
                     class="ml-2"
                     stroke="currentColor"
                     fill="currentColor"
@@ -354,51 +354,6 @@
     <script src="https://cdn.jsdelivr.net/npm/markdown-it@10.0.0/dist/markdown-it.min.js"></script>
 
     <script src="/populateForm.js"></script>
-    <script>
-      // JS Snippet for managing tabs
-      const tabs = document.querySelectorAll("[data-tab-target]");
-      const tabContents = document.querySelectorAll("[data-tab-content]");
 
-      tabs.forEach((tab) => {
-        tab.addEventListener("click", () => {
-          const target = document.querySelector(tab.dataset.tabTarget);
-          tabContents.forEach((tabContent) => {
-            tabContent.classList.add("hidden");
-          });
-          tabs.forEach((tab) => {
-            tab.classList.remove("bg-blue-600");
-            tab.classList.add("bg-[#22489A]");
-          });
-          tab.classList.remove("bg-[#22489A]");
-          tab.classList.add("bg-blue-600");
-          target.classList.remove("hidden");
-        });
-      });
-
-      // JS for managing form submission
-      const form = document.querySelector("form");
-      const output1 = document.getElementById("content-tweets");
-      const output2 = document.getElementById("content-posts");
-      const output3 = document.getElementById("content-blogs");
-      // const razpay = document.querySelector('.pay-now');
-      const def = document.getElementById("go-icon");
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        def.style.display = "none";
-        const formData = new FormData(form);
-        const response = await fetch("/", {
-          method: "POST",
-          body: formData,
-        });
-        const data = await response.json();
-        output1.innerHTML = marked.parse(data.tweets);
-        output2.innerHTML = marked.parse(data.posts);
-        output3.innerHTML = marked.parse(data.blogs);
-        const lis = document.querySelectorAll("ol");
-        for (const li of lis) {
-          li.className = "list-decimal list-outside ml-8 space-y-3";
-        }
-      });
-    </script>
   </body>
 </html>
