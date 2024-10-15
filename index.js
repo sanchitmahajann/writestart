@@ -5,7 +5,7 @@ const puppeteer = require("puppeteer");
 const app = express();
 
 app.use(express.json());
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'public')))
 
 // Serve the HTML form
 app.get('/', (req, res) => {
