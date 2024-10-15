@@ -1,4 +1,14 @@
-{
+{"headers": [
+    {
+      "source": "/populateForm.js",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
+        }
+      ]
+    }
+  ],
   "version": 2,
   "builds": [
     {

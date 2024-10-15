@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let response;
         if (clickedButton === 'fillFormButton') {
             loader1.style.display = "block";
-            go2.style.display = "none";
+            go1.style.display = "none";
             response = await fetch('/scrape', {
                 method: 'POST',
                 headers: {
