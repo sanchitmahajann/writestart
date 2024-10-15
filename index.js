@@ -1,7 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const puppeteer = require("puppeteer");
+const http = require('http');
+const https = require('https');
+const cheerio = require('cheerio');
 const app = express();
 
 app.use(express.json());
@@ -12,48 +14,68 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/form.html'));
 });
 
-app.post('/scrape', async (req, res) => {
+
+
+app.post('/scrape', (req, res) => {
   const { url } = req.body;
-  try {
-    const browser = await puppeteer.launch({ headless: true });
-    const page = await browser.newPage();
 
-    await page.goto(url, { timeout: 60000 }); // 1 minute timeout, change if necessary
+  const client = url.startsWith('https') ? https : http;
 
-    const visibleTexts = await page.evaluate(() => {
-      return Array.from(document.querySelectorAll("h1, h2, h3, h4, h5, h6, p, a, li, span, div"))
-        .filter((element) => element.offsetWidth > 0 && element.offsetHeight > 0)
-        .map(element => element.innerText.trim());
+  client.get(url, (response) => {
+    let data = '';
+
+    if (response.statusCode !== 200) {
+      res.status(500).json({ error: `Failed to fetch ${url}: ${response.statusCode}` });
+      return;
+    }
+    response.on('data', (chunk) => {
+      data += chunk;
+    });
+    response.on('end', () => {
+      const $ = cheerio.load(data);
+
+      const visibleTexts = [];
+      $('h1, h2, h3, h4, h5, h6, p, a, li, span, div').each((_, element) => {
+        const text = $(element).text().trim();
+        if (text) {
+          visibleTexts.push(text);
+        }
+      });
+
+      console.log('Visible texts:', visibleTexts);
+      const textContent = visibleTexts.join(', ');
+      const prompt = `Extract the following information from the text: company name, type of product, ideal user.\n\n${textContent}`;
+      makeOpenAICall(prompt)
+        .then(result => {
+          const extractInfo = (text, key) => {
+            const regex = new RegExp(`${key}:\\s*(.+)`, 'i');
+            const match = text.match(regex);
+            return match ? match[1].trim() : 'Not found';
+          };
+
+          const companyName = extractInfo(result, 'Company name');
+          const productName = extractInfo(result, 'Type of product');
+          const idealUser = extractInfo(result, 'Ideal user');
+          const extractedInfo = {
+            companyName: companyName,
+            typeOfProduct: productName,
+            idealUser: idealUser
+          };
+
+          res.json({ extractedInfo });
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          res.status(500).json({ error: 'Failed to process OpenAI request' });
+        });
     });
 
-    console.log('Visible texts:', visibleTexts);
-    const textContent = visibleTexts.filter(Boolean).join(', ');
-    const prompt = `Extract the following information from the text: company name, type of product, ideal user.\n\n${textContent}`;
-    const result = await makeOpenAICall(prompt);
-
-    const extractInfo = (text, key) => {
-      const regex = new RegExp(`${key}:\\s*(.+)`, 'i');
-      const match = text.match(regex);
-      return match ? match[1].trim() : 'Not found';
-    };
-
-    const companyName = extractInfo(result, 'Company name');
-    const productName = extractInfo(result, 'Type of product');
-    const idealUser = extractInfo(result, 'Ideal user');
-    const extractedInfo = {
-      companyName: companyName,
-      typeOfProduct: productName,
-      idealUser: idealUser
-    };
-
-    res.json({ extractedInfo });
-    await browser.close();
-
-  } catch (error) {
-    console.error('Error:', error);
+  }).on('error', (error) => {
+    console.error('HTTP request error:', error);
     res.status(500).json({ error: 'Failed to scrape the webpage or extract information' });
-  }
+  });
 });
+
 
 
 app.post('/generate', async (req, res) => {
