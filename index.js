@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const fs = require('fs').promises;
 const puppeteer = require("puppeteer");
 const app = express();
 
@@ -18,7 +17,8 @@ app.post('/scrape', async (req, res) => {
   try {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
-    await page.goto(url, { timeout: 1200000 });
+
+    await page.goto(url, { timeout: 60000 }); // 1 minute timeout, change if necessary
 
     const visibleTexts = await page.evaluate(() => {
       return Array.from(document.querySelectorAll("h1, h2, h3, h4, h5, h6, p, a, li, span, div"))
@@ -28,10 +28,7 @@ app.post('/scrape', async (req, res) => {
 
     console.log('Visible texts:', visibleTexts);
     const textContent = visibleTexts.filter(Boolean).join(', ');
-    fs.writeFileSync('scraped_text.txt', textContent);
-
-    const prompt = 'Extract the following information from the text: company name, type of product, ideal user.\n\n';
-
+    const prompt = `Extract the following information from the text: company name, type of product, ideal user.\n\n${textContent}`;
     const result = await makeOpenAICall(prompt);
 
     const extractInfo = (text, key) => {
@@ -43,32 +40,27 @@ app.post('/scrape', async (req, res) => {
     const companyName = extractInfo(result, 'Company name');
     const productName = extractInfo(result, 'Type of product');
     const idealUser = extractInfo(result, 'Ideal user');
-
     const extractedInfo = {
       companyName: companyName,
       typeOfProduct: productName,
       idealUser: idealUser
     };
-    console.log(extractedInfo);
-    // Send both extracted info and generated content back to the client
+
     res.json({ extractedInfo });
     await browser.close();
 
-
-
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ error: 'Failed to scrape the webpage' });
+    res.status(500).json({ error: 'Failed to scrape the webpage or extract information' });
   }
 });
 
+
 app.post('/generate', async (req, res) => {
   const { companyName, productName, idealUser } = req.body;
-  // Validate that all required parameters are present
   if (!companyName || !productName || !idealUser) {
     return res.status(400).json({ error: 'Missing required parameters' });
   }
-  // Send both extracted info and generated content back to the client
   const generatedContent = await generateContent(companyName, productName, idealUser);
   res.json({ generatedContent });
 });
@@ -85,12 +77,11 @@ process.on('SIGINT', () => {
 
 async function makeOpenAICall(prompt, retries = 3) {
   try {
-    const fileText = await fs.readFile('scraped_text.txt', 'utf8');
     const payload = {
       model: "gpt-3.5-turbo",
       messages: [
         { role: "system", content: "You are a helpful assistant." },
-        { role: "user", content: `${prompt}\n\nFile content:\n${fileText}` }
+        { role: "user", content: `${prompt}\n\n` }
       ]
     };
 
