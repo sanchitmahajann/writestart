@@ -81,9 +81,6 @@ process.on('SIGINT', () => {
 });
 
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 
 async function makeOpenAICall(prompt, retries = 3) {
@@ -129,8 +126,6 @@ async function makeOpenAICall(prompt, retries = 3) {
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-
 
 async function generateTweets(companyName, productName, idealUser) {
   const prompt = `

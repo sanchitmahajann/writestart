@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const clickedButton = event.submitter.id;
         let response;
         if (clickedButton === 'fillFormButton') {
-            console.log("popform.js success");
             loader1.style.display = "block";
             response = await fetch('/scrape', {
                 method: 'POST',
