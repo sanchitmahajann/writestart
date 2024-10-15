@@ -3,7 +3,8 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const puppeteer = require("puppeteer");
-const axios = require('axios');
+import axios from 'axios/dist/node/axios.cjs';
+// https://stackoverflow.com/questions/75813948/vercel-serverless-function-crashing-due-to-cannot-find-module-var-task-backend
 const app = express();
 
 app.use(express.json());
