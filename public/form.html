@@ -11,8 +11,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script type='text/javascript' src='https://html2canvas.hertzen.com/dist/html2canvas.js'></script>
-<script type='text/javascript' src= "https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> 
-<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.min.js" integrity="sha512-2ziYH4Qk1Cs0McWDB9jfPYzvRgxC8Cj62BUC2fhwrP/sUBkkfjYk3142xTKyuCyGWL4ooW8wWOzMTX86X1xe3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type='text/javascript' src= "https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> 
+    <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.min.js" integrity="sha512-2ziYH4Qk1Cs0McWDB9jfPYzvRgxC8Cj62BUC2fhwrP/sUBkkfjYk3142xTKyuCyGWL4ooW8wWOzMTX86X1xe3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       .generatedContent h1, .generatedContent h2, .generatedContent h3, .generatedContent h4  {
@@ -111,83 +111,15 @@
                 />
               </div>
 
-              <div class="flex flex-row justify-between pt-6">
+              <div class="flex flex-row justify-center pt-6">
                 <button
-                  id="fillFormButton"
-                  type="submit"
-                  class="rounded-lg px-6 py-2 bg-[#A020F0] text-white font-semibold flex flex-row justify-center items-center"
-                >
-                
-                  Let's Go
-                  <svg
-                    id="go-icon-1"
-                    class="ml-2"
-                    stroke="currentColor"
-                    fill="currentColor"
-                    stroke-width="0"
-                    viewBox="0 0 448 512"
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"
-                    ></path>
-                  </svg>
-                  <svg
-                    id="loading-icon-1"
-                    class="ml-2"
-                    width="1em"
-                    height="1em"
-                    fill="currentColor"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <style>
-                      .spinner_ajPY {
-                        transform-origin: center;
-                        animation: spinner_AtaB 0.75s infinite linear;
-                      }
-                      @keyframes spinner_AtaB {
-                        100% {
-                          transform: rotate(360deg);
-                        }
-                      }
-                    </style>
-                    <path
-                      d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
-                      opacity=".25"
-                    />
-                    <path
-                      d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"
-                      class="spinner_ajPY"
-                    />
-                  </svg>
-                  <svg
-                    id="completed-icon-1"
-                    class=" ml-2"
-                    stroke="currentColor"
-                    fill="currentColor"
-                    stroke-width="0"
-                    viewBox="0 0 448 512"
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"
-                    ></path>
-                  </svg>
-                </button>
-                <button
-                  id="generateContentButton"
+                  id="combinedButton"
                   type="submit"
                   class="rounded-lg px-6 py-2 bg-[#A020F0] text-white font-semibold flex flex-row justify-center items-center"
                 >
                   Generate Content
                   <svg
-                    id="go-icon-2"
+                    id="go-icon"
                     class="ml-2"
                     stroke="currentColor"
                     fill="currentColor"
@@ -202,7 +134,7 @@
                     ></path>
                   </svg>
                   <svg
-                    id="loading-icon-2"
+                    id="loading-icon"
                     class="hidden ml-2"
                     width="1em"
                     height="1em"
@@ -232,8 +164,8 @@
                     />
                   </svg>
                   <svg
-                    id="completed-icon-2"
-                    class=" ml-2"
+                    id="completed-icon"
+                    class="hidden ml-2"
                     stroke="currentColor"
                     fill="currentColor"
                     stroke-width="0"
