@@ -48,7 +48,6 @@ app.post('/scrape', (req, res) => {
         }
       });
 
-      console.log('Visible texts:', visibleTexts);
       const textContent = visibleTexts.join(', ');
       const prompt = `Extract the following information from the text: company name, type of product, ideal user.\n\n${textContent}`;
       makeOpenAICall(prompt)
