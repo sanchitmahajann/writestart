@@ -1,13 +1,19 @@
-require('dotenv').config();
-const express = require('express');
-const path = require('path');
-const http = require('http');
-const https = require('https');
-const cheerio = require('cheerio');
+import 'dotenv/config';
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import http from 'http';
+import https from 'https';
+import * as cheerio from 'cheerio';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')))
+
 
 // Serve the HTML form
 app.get('/', (req, res) => {
@@ -110,7 +116,7 @@ async function makeOpenAICall(prompt, retries = 3) {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Authorization': `Bearer ${process.env.API_KEY}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
@@ -207,5 +213,12 @@ async function generateContent(companyName, productName, idealUser) {
     throw error;
   }
 }
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
+
 
 export default app;
