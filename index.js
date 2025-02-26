@@ -148,7 +148,7 @@ function sleep(ms) {
 async function generateTweets(companyName, productName, idealUser) {
   const prompt = `
     Write the first 2 Tweets for my company ${companyName}. Just list the tweets. Don't say "here are tweets" or anything similar. Generate in basic markdown with titles being bold with **. The whole content should not be bold, only the title sentence.
-    Our main product revolves around ${productName} and the ideal user is ${idealUser}.
+    Our main product revolves around ${productName} and the ideal user is ${idealUser}. Do not use Emojis.
     Rules:
     1. Tweet 1 should be about the launch
     2. Tweet 2 should be about the problem the product solves
@@ -170,7 +170,7 @@ async function getPosts(companyName, productName, idealUser) {
     2. Slide 1 Content
     3. Slide 2 Content
     Our main product revolves around ${productName} and the ideal user is ${idealUser}.
-    Each post idea should have a newline space between it so that the written content is visible in an organised way. Don't say "markdown" at the beginning. Don't say "here are instagram" or anything similar. Generate in basic markdown with titles being bold with **.
+    Each post idea should have a newline space between it so that the written content is visible in an organised way. Don't say "markdown" at the beginning. Don't say "here are instagram" or anything similar. Generate in basic markdown with titles being bold with **. Do not use emojis.
   `;
 
   const response = await makeOpenAICall(prompt);

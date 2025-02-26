@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
+        doc.addFont("NotoColor.ttf", 'NotoColor', 'normal'); // Register font
+        doc.setFont('NotoColor');
         doc.setFontSize(12);
         const element = document.getElementById("generatedContent");
 
