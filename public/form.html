@@ -18,6 +18,9 @@
       .generatedContent h1, .generatedContent h2, .generatedContent h3, .generatedContent h4  {
         font-weight: 600 !important;
       }
+      #generatedContent {
+        padding-top: 1.5rem;
+      }
     </style>
   </head>
   <body>
@@ -51,7 +54,7 @@
                   type="text"
                   id="webpageUrl"
                   name="webpageUrl"
-                  placeholder="Enter the link and we will do the rest of the work for you :0"
+                  placeholder="Enter the link and we will do the rest of the work for you"
                   class="px-4 py-2 text-[#969697] bg-[#F5F7FA] rounded-lg mt-2 focus:outline-none focus:ring-2 ring-[#A020F0] focus:border-blue-600"
                   required
                 />
@@ -286,6 +289,38 @@
     <script src="https://cdn.jsdelivr.net/npm/markdown-it@10.0.0/dist/markdown-it.min.js"></script>
 
     <script src="/populateForm.js"></script>
+
+    <script>
+      // Get all input fields
+const webpageUrlInput = document.getElementById('webpageUrl');
+const otherInputs = [
+  document.getElementById('companyName'),
+  document.getElementById('typeOfProduct'),
+  document.getElementById('idealUser')
+];
+
+webpageUrlInput.addEventListener('input', function() {
+  const hasContent = this.value.trim().length > 0;
+  
+  otherInputs.forEach(input => {
+    input.disabled = hasContent;
+    
+    if (hasContent) {
+      input.classList.add('opacity-50');
+    } else {
+      input.classList.remove('opacity-50');
+    }
+  });
+});
+
+otherInputs.forEach(input => {
+  input.addEventListener('focus', function() {
+    if (!this.disabled) {
+      webpageUrlInput.value = '';
+    }
+  });
+});
+    </script>
 
   </body>
 </html>
